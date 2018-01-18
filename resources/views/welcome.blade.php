@@ -8,7 +8,7 @@
                 <div class="panel-heading">Welcome</div>
 
                 <div class="panel-body">
-                    Your Application's Landing Page.
+                    <h1>click <a href="home">here</a> to start the chat app
                 </div>
             </div>
         </div>

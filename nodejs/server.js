@@ -1,18 +1,20 @@
 var app = require('express')();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
-var redis = require('redis');
 
-server.listen(8899);
 io.on('connection',function(socket) {
-	var rclient = redis.createClient();
-	rclient.subscribe('message');
+	console.log("user connected...");
+	
+	socket.on('disconnect', function(){
+    	console.log('user disconnected...');
+  	});
 
-	rclient.on("message",function(channel,data) {
-		socket.emit(channel, data);
+	socket.on('message', function(data) {
+		console.log("message==" + data.msg);
+		io.emit('message', data);
 	});
+});
 
-	socket.on('disconnect',function() {
-		rClient.quit();
-	})
+server.listen(8899, function() {
+	console.log('listening on port 8899');
 });

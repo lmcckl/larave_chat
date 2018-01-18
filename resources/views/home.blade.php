@@ -1,9 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
-<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-<script src="https://cdn.socket.io/socket.io-1.3.4.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
 
 <div class="container">
     <div class="row">
@@ -16,12 +15,12 @@
                             <div id="messages" style="height:300px;overflow:scroll;"></div>
                         </div>
                         <div class="col-md-12">
-                            <form action="sendMessage" method="post">
-                                <input type="hidden" name="_token" value="{{ csrf_token() }}" > 
-                                <input type="hidden" name="user" value="{{ Auth::user()->name }}" > 
-                                <textarea class="form-control msg"></textarea>
+                            <form action="chat" method="post">
+                                <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}" > 
+                                <input type="hidden" name="user" id="user" value="{{ Auth::user()->name }}" > 
+                                <input type="text" class="form-control" id="msg" />
                                 <br/>
-                                <input type="button" value="Send" class="btn btn-success send-msg">
+                                <input type="button" id="send" value="Send" class="btn btn-success">
                             </form>
                         </div>
                     </div>
@@ -30,31 +29,45 @@
         </div>
     </div>
 </div>
-<script>
-    var socket = io.connect('http://localhost:8899'); 
-    socket.on('message', function (data) {
-        data = jQuery.parseJSON(data);
-        console.log(data.user);
-        $( "#messages" ).append( "<strong>"+data.user+":</strong><p>"+data.message+"</p>" );
-    }); 
 
-    $(".send-msg").click(function(e) {
-        e.preventDefault();
-        var token = $("input[name='_token']").val(); 
-        var user = $("input[name='user']").val(); 
-        var msg = $(".msg").val();
-        if(msg != ''){
+<script>
+     $(function () {
+        var socket = io.connect('http://localhost:8899');
+        
+        var token = $("#token").val();
+        var user = $("#user").val();
+
+        $(document).bind('keypress', function(e) {
+            if(e.keyCode==13){
+                 $('#send').trigger('click');
+             }
+        });
+
+        //save the chat message
+        $('#send').click(function(e) {
+            e.preventDefault();
+            var msg = $("#msg").val();
             $.ajax({
                 type: "POST",
-                url: '{!! URL::to("sendMessage") !!}',
+                url: '/chat',
                 dataType: "json",
-                data: {'_token':token,'message':msg,'user':user}, 
+                data: {'_token':token,'msg':msg,'user':user},
                 success:function(data) {
                     console.log(data);
-                    $(".msg").val(''); }
-                }); 
-        }else {
-            alert("Please enter message."); }
-    })
+                }
+            });
+            
+
+            //broacast the message
+            var obj = {'msg':$('#msg').val(),'user':user} 
+            socket.emit('message', obj);
+            $('#msg').val('');
+            return false;
+        });
+
+        socket.on('message', function(data){
+            $('#messages').append("<strong>" + data.user + "</strong><p>" + data.msg + "</p>");
+        });
+    });
 </script>
 @endsection

@@ -19,4 +19,4 @@ Route::auth();
 
 Route::get('/home', 'HomeController@index');
 
-Route::post('sendMessage','chatController@sendMessage');
+Route::resource('/chat', 'chatController');
