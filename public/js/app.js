@@ -1,4 +1,6 @@
 $(function () {
+        $("#messages").scrollTop($("#messages")[0].scrollHeight);
+
         var socket = io.connect('http://52.220.113.183:8899');
         
         var token = $("#token").val();
@@ -43,5 +45,6 @@ $(function () {
         //update the chat box
         socket.on('message', function(data){
             $('#messages').append("<strong>" + data.user + "</strong><p>" + data.msg + "</p>");
+            $("#messages").scrollTop($("#messages")[0].scrollHeight + 50);
         });
     });

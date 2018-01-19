@@ -1,11 +1,7 @@
 .mbox {
-	position: absolute; 
+	height:350px;
+	overflow:scroll;
 	bottom:0; 
 	left:0;
-}
-
-.wrap {
-	height:350px;
-	overflow:hidden;
-	position:relative;
+	
 }

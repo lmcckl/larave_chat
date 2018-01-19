@@ -10,6 +10,10 @@ use App\Chat;
 
 class chatController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -18,6 +22,8 @@ class chatController extends Controller
     public function index()
     {
         //
+        $data = Chat::all();
+        return view('chat',['data'=>$data]);
     }
 
     /**

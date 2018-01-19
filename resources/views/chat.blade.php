@@ -12,8 +12,11 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <div id="wrap" class="wrap">
-                                <div id="messages" class="mbox"></div>
+                            <div id="messages" class="mbox">
+                                @foreach ($data as $col)
+                                    <strong>{{$col->user}}</strong><p>{{$col->msg}}</p>
+                                @endforeach
+                                <p>Now</p>
                             </div>
                         </div>
                         <div class="col-md-12">

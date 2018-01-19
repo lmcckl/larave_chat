@@ -8,7 +8,7 @@
                 <div class="panel-heading">Welcome</div>
 
                 <div class="panel-body">
-                    <h1>click <a href="home">here</a> to start the chat app
+                    <h1>click <a href="chat">here</a> to start the chat app
                 </div>
             </div>
         </div>
