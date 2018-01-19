@@ -12,7 +12,9 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <div id="messages" class="mbox"></div>
+                            <div id="wrap" class="wrap">
+                                <div id="messages" class="mbox"></div>
+                            </div>
                         </div>
                         <div class="col-md-12">
                             <form action="chat" method="post">

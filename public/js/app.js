@@ -4,6 +4,7 @@ $(function () {
         var token = $("#token").val();
         var user = $("#user").val();
 
+        //key in enter to send message
         $(document).keypress(function(e) {
             if(e.which == 13) {
                 event.preventDefault();
@@ -15,6 +16,13 @@ $(function () {
         $('#send').click(function(e) {
             e.preventDefault();
             msg = $("#msg").val();
+            
+            //do nothing if message is blank
+            if (msg == "") {
+                return;
+            }
+
+            //save to database    
             $.ajax({
                 type: "POST",
                 url: '/chat',
@@ -32,6 +40,7 @@ $(function () {
             return false;
         });
 
+        //update the chat box
         socket.on('message', function(data){
             $('#messages').append("<strong>" + data.user + "</strong><p>" + data.msg + "</p>");
         });
